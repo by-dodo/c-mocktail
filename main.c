@@ -53,16 +53,15 @@ void addMocktail() {
             printf("Maksimalni broj moktela.\n");
             return;
         }
-        int n = numberOfDrinks;
-        gets(mocktails[n].name);
+        gets(mocktails[numberOfDrinks].name);
         printf("Upisi naziv novog moktela: \n");
-        gets(mocktails[n].name);
+        gets(mocktails[numberOfDrinks].name);
         printf("Upisi opis novog moktela: \n");
-        gets(mocktails[n].description);
+        gets(mocktails[numberOfDrinks].description);
         printf("Upisi cijenu novog moktela: \n");
-        scanf("%f",&mocktails[n].price);
+        scanf("%f",&mocktails[numberOfDrinks].price);
         printf("Upisi ocjenu novog moktela: \n");
-        scanf("%d",&mocktails[n].rating);
+        scanf("%d",&mocktails[numberOfDrinks].rating);
         printf("Upisi 0 za dodavanje novog recepta: ");
         scanf("%d",&choice);
         numberOfDrinks += 1;
