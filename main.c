@@ -51,7 +51,7 @@ void addMocktail() {
     int choice = 0;
     do {
         if (numberOfDrinks >= drinkLimit) {
-            printf("Postoji maksimalan broj recepata moktela.\n");
+            printf("Postoji maksimalan broj recepata moktela (%d).\n", drinkLimit);
             return;
         }
         gets(mocktails[numberOfDrinks].name);
@@ -132,24 +132,45 @@ void sortByPrice () {
     int choice;
     printf("Sortirani mokteli po cijeni:\n");
     printf("\t 1 - od vece prema manjoj\n");
-    printf("\t 2 - od manje prema vecoj\n");
+    printf("\t 2 - od manje prema vecoj\n");\
+    printf("\t 3 - najskuplji\n");
+    printf("\t 4 - najjeftiniji\n");
     scanf("%d", &choice);
-    if (choice == 1) {
-        for (int i = 0; i < numberOfDrinks; i++) {
-            printf("\time: %s\n", sorted[i].name);
-            printf("\topis: %s\n", sorted[i].description);
-            printf("\tcijena: %.2f €\n", sorted[i].price);
-            printf("\tocjena: %d\n", sorted[i].rating);
+    switch (choice) {
+        case 1:
+            for (int i = 0; i < numberOfDrinks; i++) {
+                printf("\time: %s\n", sorted[i].name);
+                printf("\topis: %s\n", sorted[i].description);
+                printf("\tcijena: %.2f €\n", sorted[i].price);
+                printf("\tocjena: %d\n", sorted[i].rating);
+                printf("\n");
+            }
+            break;
+        case 2:
+            for (int i = numberOfDrinks - 1; i >= 0; i--) {
+                printf("\time: %s\n", sorted[i].name);
+                printf("\topis: %s\n", sorted[i].description);
+                printf("\tcijena: %.2f €\n", sorted[i].price);
+                printf("\tocjena: %d\n", sorted[i].rating);
+                printf("\n");
+            }
+            break;
+        case 3:
+            printf("\time: %s\n", sorted[0].name);
+            printf("\topis: %s\n", sorted[0].description);
+            printf("\tcijena: %.2f €\n", sorted[0].price);
+            printf("\tocjena: %d\n", sorted[0].rating);
             printf("\n");
-        }
-    }else {
-        for (int i = numberOfDrinks - 1; i >= 0; i--) {
-            printf("\time: %s\n", sorted[i].name);
-            printf("\topis: %s\n", sorted[i].description);
-            printf("\tcijena: %.2f €\n", sorted[i].price);
-            printf("\tocjena: %d\n", sorted[i].rating);
+            break;
+        case 4:
+            printf("\time: %s\n", sorted[numberOfDrinks - 1].name);
+            printf("\topis: %s\n", sorted[numberOfDrinks - 1].description);
+            printf("\tcijena: %.2f €\n", sorted[numberOfDrinks - 1].price);
+            printf("\tocjena: %d\n", sorted[numberOfDrinks - 1].rating);
             printf("\n");
-        }
+            break;
+        default:
+            printf("Nije upisana ispravna opcija.\n");
     }
 
 }
@@ -190,7 +211,6 @@ void sortByRating () {
             printf("\n");
         }
     }
-
 }
 
 int main() {
@@ -219,7 +239,7 @@ int main() {
                 break;
             case 5:
                 printf("Dovidenja!");
-                exit(1);
+                exit(0);
             default:
                 printf("Nije upisana ispravna opcija.\nPokusajte ponovo <3\n");
                 break;
