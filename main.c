@@ -1,4 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -50,7 +51,7 @@ void addMocktail() {
     int choice = 0;
     do {
         if (numberOfDrinks >= drinkLimit) {
-            printf("Maksimalni broj moktela.\n");
+            printf("Postoji maksimalan broj recepata moktela.\n");
             return;
         }
         gets(mocktails[numberOfDrinks].name);
@@ -70,25 +71,47 @@ void addMocktail() {
 
 void listByName ()  {
     char seekName[50];
+    int recipe = 0;
     int found = 0;
     gets(seekName);  // cleara enter od proslog scanfa, bez ovog ne radi :3
-    printf("Upisi naziv mocktaila koji zelis naci: \n");
+    printf("Upisi naziv moktela koji zelis naci: \n");
     gets(seekName);  // zapravo uzima string
+    int lengthOfName = strlen(seekName);
+    printf("Mokteli sa tim imenom:\n");
     for (int i = 0; i < numberOfDrinks; i++) {
-        if (strcmp(mocktails[i].name, seekName) == 0) {
-            if (found == 0) {
-                printf("Pronadeni recepti:\n");
-                found++;
+        int length = 0;
+        int lengthOfMocktailName = strlen(mocktails[i].name);
+        for (int j = 0; j < lengthOfMocktailName; j++) {
+            if (tolower(mocktails[i].name[j]) == tolower(seekName[length])) {
+                for (int k = j; k < j + lengthOfName; k++) {
+                    if (tolower(mocktails[i].name[k]) == tolower(seekName[length])) {
+                        length++;
+                    }else {
+                        length = 0;
+                        break;
+                    }
+                    if (length == lengthOfName) {
+                        found = 1;
+                        break;
+                    }
+                }
+                if (found) {
+                    break;
+                }
             }
+        }
+        if (found) {
+            recipe++;
             printf("\time: %s\n", mocktails[i].name);
             printf("\topis: %s\n", mocktails[i].description);
             printf("\tcijena: %.2f €\n", mocktails[i].price);
             printf("\tocjena: %d\n", mocktails[i].rating);
             printf("\n");
         }
+        found = 0;
     }
-    if (found == 0) {
-        printf("Nije pronaden niti jedan recept s tim imenom.\n");
+    if (recipe == 0) {
+        printf("\tnema recept sa tim imenom.\n");
     }
 }
 
