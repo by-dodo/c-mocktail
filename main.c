@@ -47,6 +47,13 @@ struct Drink mocktails[drinkLimit] = {
 
 int numberOfDrinks = 5;
 
+void printMocktail(struct Drink mocktail) {
+    printf("\time: %s\n", mocktail.name);
+    printf("\topis: %s\n", mocktail.description);
+    printf("\tcijena: %.2f €\n", mocktail.price);
+    printf("\tocjena: %d\n", mocktail.rating);
+}
+
 void addMocktail() {
     int choice = 0;
     do {
@@ -102,10 +109,7 @@ void listByName ()  {
         }
         if (found) {
             recipe++;
-            printf("\time: %s\n", mocktails[i].name);
-            printf("\topis: %s\n", mocktails[i].description);
-            printf("\tcijena: %.2f €\n", mocktails[i].price);
-            printf("\tocjena: %d\n", mocktails[i].rating);
+            printMocktail(mocktails[i]);
             printf("\n");
         }
         found = 0;
@@ -139,34 +143,22 @@ void sortByPrice () {
     switch (choice) {
         case 1:
             for (int i = 0; i < numberOfDrinks; i++) {
-                printf("\time: %s\n", sorted[i].name);
-                printf("\topis: %s\n", sorted[i].description);
-                printf("\tcijena: %.2f €\n", sorted[i].price);
-                printf("\tocjena: %d\n", sorted[i].rating);
+                printMocktail(sorted[i]);
                 printf("\n");
             }
             break;
         case 2:
             for (int i = numberOfDrinks - 1; i >= 0; i--) {
-                printf("\time: %s\n", sorted[i].name);
-                printf("\topis: %s\n", sorted[i].description);
-                printf("\tcijena: %.2f €\n", sorted[i].price);
-                printf("\tocjena: %d\n", sorted[i].rating);
+                printMocktail(sorted[i]);
                 printf("\n");
             }
             break;
         case 3:
-            printf("\time: %s\n", sorted[0].name);
-            printf("\topis: %s\n", sorted[0].description);
-            printf("\tcijena: %.2f €\n", sorted[0].price);
-            printf("\tocjena: %d\n", sorted[0].rating);
+            printMocktail(sorted[0]);
             printf("\n");
             break;
         case 4:
-            printf("\time: %s\n", sorted[numberOfDrinks - 1].name);
-            printf("\topis: %s\n", sorted[numberOfDrinks - 1].description);
-            printf("\tcijena: %.2f €\n", sorted[numberOfDrinks - 1].price);
-            printf("\tocjena: %d\n", sorted[numberOfDrinks - 1].rating);
+            printMocktail(sorted[numberOfDrinks - 1]);
             printf("\n");
             break;
         default:
@@ -196,18 +188,12 @@ void sortByRating () {
     scanf("%d", &choice);
     if (choice == 1) {
         for (int i = 0; i < numberOfDrinks; i++) {
-            printf("\time: %s\n", sorted[i].name);
-            printf("\topis: %s\n", sorted[i].description);
-            printf("\tcijena: %.2f €\n", sorted[i].price);
-            printf("\tocjena: %d\n", sorted[i].rating);
+            printMocktail(sorted[i]);
             printf("\n");
         }
     }else {
         for (int i = numberOfDrinks - 1; i >= 0; i--) {
-            printf("\time: %s\n", sorted[i].name);
-            printf("\topis: %s\n", sorted[i].description);
-            printf("\tcijena: %.2f €\n", sorted[i].price);
-            printf("\tocjena: %d\n", sorted[i].rating);
+            printMocktail(sorted[i]);
             printf("\n");
         }
     }
