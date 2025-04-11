@@ -65,7 +65,7 @@ void addMocktail() {
         printf("Upisi 0 za dodavanje novog recepta: ");
         scanf("%d",&choice);
         numberOfDrinks += 1;
-    }while (choice == 0);
+    } while (choice == 0);
 }
 
 void listByName ()  {
