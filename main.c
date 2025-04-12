@@ -83,16 +83,28 @@ void addMocktail() {
             printf("Postoji maksimalan broj recepata moktela (%d).\n", MAX_DRINKS);
             return;
         }
+        printf("\n");
+        printf("Unos novog recepta:\n");
         gets(mocktails[numberOfDrinks].name);
-        printf("Upisi naziv novog moktela: \n");
+        printf("Ime: ");
         gets(mocktails[numberOfDrinks].name);
-        printf("Upisi opis novog moktela: \n");
+        printf("Opis: ");
         gets(mocktails[numberOfDrinks].description);
-        printf("Upisi cijenu novog moktela: \n");
+        printf("Cijena: ");
         scanf("%f",&mocktails[numberOfDrinks].price);
-        printf("Upisi ocjenu novog moktela: \n");
+        while (mocktails[numberOfDrinks].price < 0) {
+            printf("Vrijednost ne smije biti manja od nule.\n");
+            printf("Cijena: ");
+            scanf("%f",&mocktails[numberOfDrinks].price);
+        };
+        printf("Ocjena: ");
         scanf("%f",&mocktails[numberOfDrinks].rating);
-        printf("Upisi 0 za dodavanje novog recepta: ");
+        while (!(mocktails[numberOfDrinks].rating >= 1 && mocktails[numberOfDrinks].rating <= 10)) {
+            printf("Vrijednost mora biti u rasponu od jedan do deset.\n");
+            printf("Ocjena: ");
+            scanf("%f",&mocktails[numberOfDrinks].rating);
+        };
+        printf("Upisi 0 za dodavanje jos jednog recepta: ");
         scanf("%d",&choice);
         numberOfDrinks += 1;
     } while (choice == 0);
