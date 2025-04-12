@@ -11,6 +11,7 @@
 #define PRINT_OPTION_DELETE 3
 
 
+char buffer[100];
 struct Drink {
     char name[50];
     char description[100];
@@ -271,8 +272,11 @@ void deleteMocktail () {
 }
 
 int main() {
+    printf("\tDobrodosli u MocktailCraft aplikaciju !\n");
+    printf("\t\tBy by-dora (Dora Hlevnjak)!\n");
+    
     int choice;
-    printf("\t\tDobrodosli u MocktailCraft aplikaciju !\n");
+    
     do {
         printf("Izaberi opciju:\n");
         printf("\t1 - dodavanje\n");
@@ -281,7 +285,14 @@ int main() {
         printf("\t4 - ispis po ocjeni\n");
         printf("\t5 - brisanje\n");
         printf("\t6 - izlaz\n");
-        scanf("%d", &choice);
+        
+        fgets(buffer, sizeof(buffer), stdin);
+        int parsedCount = sscanf(buffer, "%d", &choice);
+        if (parsedCount != 1 || strspn(buffer, "123456 \n") != strlen(buffer)) {
+            printf("Nije upisana ispravna opcija.\nPokusajte ponovo <3\n");
+            continue;
+        }
+        
         switch (choice) {
             case 1:
                 addMocktail();
