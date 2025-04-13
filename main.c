@@ -373,7 +373,6 @@ int main() {
     int choice;
     printf(WHITE "\tDobrodosli u " PINK_NEON "MocktailCraft" WHITE" aplikaciju !\n");
     printf( PINK_DIRTY "\t\tby-dora (Dora Hlevnjak)! <3\n");
-
     do {
         printf(PINK_PASTEL "\nGlavni izbornik:\n" WHITE);
         printf(WHITE "\t1 - dodavanje\n");
