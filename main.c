@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -10,20 +9,16 @@
 #define PRINT_OPTION_DELETE 1
 #define PRINT_OPTION_ALPHA 2
 
-#define PINK_NEON        "\033[38;5;207m"
-#define CYAN        "\033[38;5;4m"
-#define GREEN       "\033[38;5;10m"
-#define YELLOW      "\033[38;5;142m"
-#define BLUE        "\033[38;5;33m"
-#define PINK_PASTEL      "\033[38;5;219m"
-#define WHITE       "\033[38;5;15m"
-#define PINK_DIRTY     "\033[38;5;13m"
-#define RED         "\033[38;5;196m"
-#define PINK_MID    "\033[38;5;219m"
-#define PINK_LIGHT    "\033[38;5;225m"
 #define RESET       "\033[0m"
+#define WHITE       "\033[38;5;15m"
 #define GREY        "\033[3;38;5;245m"
-
+#define RED         "\033[38;5;196m"
+#define PINK_NEON   "\033[38;5;207m"
+#define PINK_DIRTY  "\033[38;5;13m"
+#define PINK_MID    "\033[38;5;219m"
+#define PINK_LIGHT  "\033[38;5;225m"
+#define PINK_PASTEL "\033[38;5;219m"
+#define GREEN       "\033[38;5;10m"
 
 struct Drink {
     char name[25];
@@ -79,10 +74,11 @@ struct Drink mocktails[MAX_DRINKS] = {
 
 int numberOfDrinks = 7;
 
-void printDivisionLine () {
-    printf( GREY"   ______________________________________________________\n" RESET);
+void printDivisionLine() {
+    printf(GREY"   ______________________________________________________\n" RESET);
 }
-bool scanInt (int* result) {
+
+bool scanInt(int* result) {
     char buffer[100], leftover;
     fgets(buffer, sizeof(buffer), stdin);
     buffer[strcspn(buffer, "\n")] = 0;
@@ -93,7 +89,7 @@ bool scanInt (int* result) {
     return true;
 }
 
-bool scanFloat (float* result) {
+bool scanFloat(float* result) {
     char buffer[100], leftover;
     fgets(buffer, sizeof(buffer), stdin);
     buffer[strcspn(buffer, "\n")] = 0;
@@ -104,7 +100,7 @@ bool scanFloat (float* result) {
     return true;
 }
 
-bool scanChar (char* result) {
+bool scanChar(char* result) {
     char buffer[100], leftover;
     fgets(buffer, sizeof(buffer), stdin);
     buffer[strcspn(buffer, "\n")] = 0;
@@ -115,7 +111,7 @@ bool scanChar (char* result) {
     return true;
 }
 
-void scanString (char* result) {
+void scanString(char* result) {
     char buffer[100];
     fgets(buffer, sizeof(buffer), stdin);
     buffer[strcspn(buffer, "\n")] = 0;
@@ -194,7 +190,7 @@ void addMocktail() {
             printf(RED "Vrijednost mora biti broj u rasponu od jedan do deset.\n" RESET);
             printf(WHITE "Ocjena: " RESET);
         };
-        printf("\nUpisi 0 za dodavanje jos jednog recepta: ");
+        printf("\nUpisi " PINK_LIGHT "0" RESET " za dodavanje jos jednog recepta: ");
         if (!scanInt(&choice)) {
             choice = 1;
         }
@@ -203,7 +199,7 @@ void addMocktail() {
     while (choice == 0);
 }
 
-void searchByName ()  {
+void searchByName()  {
     char seekName[50];
     int recipe = 0;
     int found = 0;
@@ -246,7 +242,7 @@ void searchByName ()  {
     }
 }
 
-void sortByPrice () {
+void sortByPrice() {
     struct Drink sorted[numberOfDrinks];
     for (int i = 0; i < numberOfDrinks; i++) {
         sorted[i] = mocktails[i];
@@ -266,7 +262,7 @@ void sortByPrice () {
     printf("\t 2 - uzlazno\n");\
     printf("\t 3 - najskuplji\n");
     printf("\t 4 - najjeftiniji\n" RESET);
-    printf("Unesi opciju: ");
+    printf("Upisi opciju: ");
     scanInt(&choice);
     printf("\n");
     switch (choice) {
@@ -301,7 +297,7 @@ void sortByPrice () {
     }
 }
 
-void sortByRating () {
+void sortByRating() {
     struct Drink sorted[numberOfDrinks];
     for (int i = 0; i < numberOfDrinks; i++) {
         sorted[i] = mocktails[i];
@@ -339,9 +335,9 @@ void sortByRating () {
     }
 }
 
-void deleteMocktail () {
+void deleteMocktail() {
     int choice;
-    char confrimation;
+    char confirmation;
     printf(PINK_PASTEL "Upisi redni broj moktela za brisanje:\n" RESET);
     for (int i = 0; i < numberOfDrinks; i++) {
         printMocktail(mocktails[i], PRINT_OPTION_DELETE, i);
@@ -352,12 +348,11 @@ void deleteMocktail () {
         printf("Upisi: ");
     }
     printf(PINK_LIGHT "Brisanje moktela %d:" PINK_DIRTY " %s\n" RESET,choice,mocktails[choice - 1].name);
-
-    printf("Upisi potvrdu [y/n]: ");
-    if (!scanChar(&confrimation)) {
-        confrimation = 'n';
+    printf("Upisi potvrdu [" PINK_NEON "y" RESET "/" PINK_NEON "n" RESET "]: ");
+    if (!scanChar(&confirmation)) {
+        confirmation = 'n';
     }
-    if (tolower(confrimation) == 'y') {
+    if (tolower(confirmation) == 'y') {
         for (int i = choice - 1; i < numberOfDrinks; i++) {
             mocktails[i] = mocktails[i + 1];
         }
@@ -372,15 +367,15 @@ void deleteMocktail () {
 int main() {
     int choice;
     printf(WHITE "\tDobrodosli u " PINK_NEON "MocktailCraft" WHITE" aplikaciju !\n");
-    printf( PINK_DIRTY "\t\tby-dora (Dora Hlevnjak)! <3\n");
+    printf(PINK_DIRTY "\t\tby-dodo (Dora Hlevnjak)! <3\n");
     do {
         printf(PINK_PASTEL "\nGlavni izbornik:\n" WHITE);
-        printf(WHITE "\t1 - dodavanje\n");
-        printf( "\t2 - lista moktela\n");
-        printf("\t3 - ispis po nazivu\n");
-        printf( "\t4 - ispis po cijeni\n");
-        printf("\t5 - ispis po ocjeni\n");
-        printf( "\t6 - brisanje\n");
+        printf(WHITE "\t1 - listaj moktele\n");
+        printf("\t2 - dodaj\n");
+        printf("\t3 - obrisi\n");
+        printf("\t4 - ispis po nazivu\n");
+        printf("\t5 - ispis po cijeni\n");
+        printf("\t6 - ispis po ocjeni\n");
         printf("\t7 - izlaz\n" RESET);
         printf("Upisi opciju: ");
 
@@ -388,28 +383,28 @@ int main() {
             choice = 0;
         }
         printf("\n");
-        if (numberOfDrinks == 0 && choice != 1 && choice != 7) {
-            printf("Trenutno nema upisanih moktela.\n");
+        if (numberOfDrinks == 0 && choice != 2 && choice != 7) {
+            printf(RED "Trenutno nema upisanih moktela.\n" RESET);
             continue;
         }
         switch (choice) {
             case 1:
-                addMocktail();
-                break;
-            case 2:
                 listAlphabetically();
                 break;
+            case 2:
+                addMocktail();
+                break;
             case 3:
-                searchByName();
+                deleteMocktail();
                 break;
             case 4:
-                sortByPrice();
+                searchByName();
                 break;
             case 5:
-                sortByRating();
+                sortByPrice();
                 break;
             case 6:
-                deleteMocktail();
+                sortByRating();
                 break;
             case 7:
                 printf(PINK_NEON "Dovidenja!" RESET);
