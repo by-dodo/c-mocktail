@@ -9,6 +9,7 @@
 #define PRINT_OPTION_PRICE 1
 #define PRINT_OPTION_RATING 2
 #define PRINT_OPTION_DELETE 3
+#define PRINT_OPTION_ALPHA 4
 
 
 struct Drink {
@@ -95,28 +96,26 @@ void scanString (char* result) {
 
 void printMocktail(struct Drink mocktail, int printOption, int index) {
     switch (printOption) {
-        default:
-            if (index != -1) {
-                printf("\t%d. %-25s%10.2f €\t%4.1f/10\n", index + 1,mocktail.name,mocktail.price,mocktail.rating);
-            }
-            else {
-                printf("\time: %s\n", mocktail.name);
-                printf("\topis: %s\n", mocktail.description);
-                printf("\tcijena: %.2f €\n", mocktail.price);
-                printf("\tocjena: %.2f\n", mocktail.rating);
-            }
+        case PRINT_OPTION_ALPHA:
+            printf("\t%2d. %-25s%10.2f €\t%4.1f/10\n", index + 1, mocktail.name, mocktail.price, mocktail.rating);
+            break;
+        case PRINT_OPTION_VERBOSE:
+            printf("\time: %s\n", mocktail.name);
+            printf("\topis: %s\n", mocktail.description);
+            printf("\tcijena: %.2f €\n", mocktail.price);
+            printf("\tocjena: %.2f\n", mocktail.rating);
             break;
         case PRINT_OPTION_PRICE:
             printf("\t");
             if (index > 0) {
-                printf("%d:",index);
+                printf("%d:\t", index);
             }
-            printf("\t%-25s%.2f €\n", mocktail.name, mocktail.price);
+            printf("%-25s%.2f €\n", mocktail.name, mocktail.price);
             break;
         case PRINT_OPTION_RATING:
             printf("\t");
             if (index > 0) {
-                printf("%d:",index);
+                printf("%d:", index);
             }
             printf("\t%-25s%.1f/10\n", mocktail.name, mocktail.rating);
             break;
@@ -149,19 +148,19 @@ void listAlphabetically() {
             }
         }
     }
-    printf("   Rb      Ime                        Cijena     Ocjena\n  ______________________________________________________\n");
+    printf("    Rb      Ime                       Cijena     Ocjena\n");
+    printf("   ______________________________________________________\n");
     for (int i = 0; i < numberOfDrinks; i++) {
-        printMocktail(sorted[i], PRINT_OPTION_VERBOSE, i);
+        printMocktail(sorted[i], PRINT_OPTION_ALPHA, i);
     }
-    printf("  ______________________________________________________\n");
-
+    printf("   ______________________________________________________\n");
 }
 
 void addMocktail() {
     int choice = 0;
     do {
         if (numberOfDrinks >= MAX_DRINKS) {
-            printf("Postoji maksimalan broj recepata moktela (%d).\n", MAX_DRINKS);
+            printf("Nije dozvoljen unos, postoji maksimalan broj recepata (%d).\n", MAX_DRINKS);
             return;
         }
         printf("Unos novog recepta:\n");
@@ -170,8 +169,8 @@ void addMocktail() {
         printf("Opis: ");
         scanString(mocktails[numberOfDrinks].description);
         printf("Cijena: ");
-        while (!scanFloat(&mocktails[numberOfDrinks].price) || mocktails[numberOfDrinks].price < 0) {
-            printf("Vrijednost mora biti broj veci ili jednak od nule.\n");
+        while (!scanFloat(&mocktails[numberOfDrinks].price) || mocktails[numberOfDrinks].price < 0 || mocktails[numberOfDrinks].price >= 10000000.0) {
+            printf("Broj mora biti veci ili jednak od nule i razumne vrijednosti.\n");
             printf("Cijena: ");
         };
         printf("Ocjena: ");
@@ -184,7 +183,8 @@ void addMocktail() {
             choice = 1;
         }
         numberOfDrinks += 1;
-    } while (choice == 0);
+    }
+    while (choice == 0);
 }
 
 void searchByName ()  {
@@ -203,7 +203,8 @@ void searchByName ()  {
                 for (int k = j; k < j + lengthOfName; k++) {
                     if (tolower(mocktails[i].name[k]) == tolower(seekName[length])) {
                         length++;
-                    }else {
+                    }
+                    else {
                         length = 0;
                         break;
                     }
@@ -265,7 +266,7 @@ void sortByPrice () {
             printf("Mokteli sortirani od najmanje cijene prema najvecoj :\n");
             printf("   ______________________________________\n");
             for (int i = numberOfDrinks - 1; i >= 0; i--) {
-                printMocktail(sorted[i],PRINT_OPTION_PRICE,  numberOfDrinks - i);
+                printMocktail(sorted[i], PRINT_OPTION_PRICE, numberOfDrinks - i);
             }
             printf("   ______________________________________\n");
             break;
@@ -282,7 +283,6 @@ void sortByPrice () {
         default:
             printf("Nije upisana ispravna opcija.\n");
     }
-
 }
 
 void sortByRating () {
@@ -309,14 +309,15 @@ void sortByRating () {
         printf("\nMokteli sortirani silazno:\n");
         printf("   ______________________________________\n");
         for (int i = 0; i < numberOfDrinks; i++) {
-            printMocktail(sorted[i],PRINT_OPTION_RATING, i + 1);
+            printMocktail(sorted[i], PRINT_OPTION_RATING, i + 1);
         }
         printf("   ______________________________________\n");
-    }else {
+    }
+    else {
         printf("\nMokteli sortirani uzlazno:\n");
         printf("   ______________________________________\n");
         for (int i = numberOfDrinks - 1; i >= 0; i--) {
-            printMocktail(sorted[i],PRINT_OPTION_RATING, numberOfDrinks - i);
+            printMocktail(sorted[i], PRINT_OPTION_RATING, numberOfDrinks - i);
         }
         printf("   ______________________________________\n");
     }
@@ -327,7 +328,7 @@ void deleteMocktail () {
     char confrimation;
     printf("Upisi redni broj moktela za brisanje:\n");
     for (int i = 0; i < numberOfDrinks; i++) {
-        printMocktail(mocktails[i],PRINT_OPTION_DELETE, i);
+        printMocktail(mocktails[i], PRINT_OPTION_DELETE, i);
     }
     printf("Upisi: ");
     while (!scanInt(&choice) || choice < 1 || choice > numberOfDrinks) {
@@ -346,7 +347,8 @@ void deleteMocktail () {
         }
         numberOfDrinks = numberOfDrinks - 1;
         printf("Moktel uspjesno izbrisan.\n");
-    }else {
+    }
+    else {
         printf("Nije izbrisan.\n");
     }
 }
@@ -354,7 +356,7 @@ void deleteMocktail () {
 int main() {
     int choice;
     printf("\tDobrodosli u MocktailCraft aplikaciju !\n");
-    printf("\t\tby-dora (Dora Hlevnjak)! <3\n");
+    printf("\t\tby-dodo (Dora Hlevnjak)! <3\n");
 
     do {
         printf("\nGlavni izbornik:\n");
@@ -401,6 +403,7 @@ int main() {
                 printf("Nije upisana ispravna opcija.\nPokusaj ponovo <3\n");
                 break;
         }
-    }while (true);
+    }
+    while (true);
     return 0;
 }
