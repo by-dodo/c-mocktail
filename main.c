@@ -4,12 +4,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #define MAX_DRINKS 15
 #define PRINT_OPTION_VERBOSE 0
-#define PRINT_OPTION_PRICE 1
-#define PRINT_OPTION_RATING 2
-#define PRINT_OPTION_DELETE 3
-#define PRINT_OPTION_ALPHA 4
+#define PRINT_OPTION_DELETE 1
+#define PRINT_OPTION_ALPHA 2
+
+#define RED     "\033[31m"
+#define GREEN   "\033[32m"
+#define YELLOW  "\033[38;5;227m"
+#define BLUE    "\033[34m"
+#define MAGENTA1 "\033[35m"
+#define CYAN    "\033[36m"
+#define WHITE   "\033[0m"
+#define PINK    "\033[38;5;198m"
+#define MAGENTA "\033[38;5;13m"
 
 
 struct Drink {
@@ -21,39 +30,54 @@ struct Drink {
 
 struct Drink mocktails[MAX_DRINKS] = {
     {
-        "Citrus Burst",
-        "A zesty mix of orange, lime, and soda water.",
-        4.99,
-        5.2
+        "Ljetni osvjezivac",
+        "Mjesavina limete, mente i gazirane vode.",
+        3.50,
+        7.8
     },
     {
-        "Berry Breeze",
-        "A refreshing blend of strawberries, blueberries, and mint.",
-        5.49,
-        4.5
+        "Grozdjani bliss",
+        "Sok od crnog grozdja, menta i limun.",
+        4.00,
+        6.3
     },
     {
-        "Tropical Twist",
-        "Pineapple, coconut milk, and mango for a beachy vibe.",
-        5.99,
-        6.8
+        "Narandzin snop",
+        "Svjezi sok od narandze, malo meda i menta.",
+        3.70,
+        8.2
     },
     {
-        "Minty Melon",
-        "Watermelon juice with a hint of mint and lemon.",
-        4.79,
-        4.1
+        "Tropski raj",
+        "Kokosovo mlijeko, ananas i banana bez alkohola.",
+        7.50,
+        3.7
     },
     {
-        "Ginger Glow",
-        "Spicy ginger beer with lime and cucumber slices.",
-        5.25,
-        5.9
+        "Ledeni caj",
+        "Fuzetea breskva, crni caj i hibiskus.",
+        3.60,
+        9.6
+    },
+    {
+        "Ruzina magla",
+        "Sirup od ruze, limunada i svjeze latice.",
+        12.00,
+        3.4
+    },
+    {
+        "Borovnicki uzitak",
+        "Borovnice, lavanda i limun u gaziranoj vodi.",
+        5.30,
+        1.1
     }
 };
 
-int numberOfDrinks = 5;
+int numberOfDrinks = 7;
 
+void printDivisionLine () {
+    printf("   ______________________________________________________\n");
+}
 bool scanInt (int* result) {
     char buffer[100], leftover;
     fgets(buffer, sizeof(buffer), stdin);
@@ -97,7 +121,11 @@ void scanString (char* result) {
 void printMocktail(struct Drink mocktail, int printOption, int index) {
     switch (printOption) {
         case PRINT_OPTION_ALPHA:
-            printf("\t%2d. %-25s%10.2f €\t%4.1f/10\n", index + 1, mocktail.name, mocktail.price, mocktail.rating);
+            printf("\t");
+            if (index > 0) {
+                printf("%2d: ",index);
+            }
+            printf("%-25s%10.2f €\t%4.1f/10\n", mocktail.name, mocktail.price, mocktail.rating);
             break;
         case PRINT_OPTION_VERBOSE:
             printf("\time: %s\n", mocktail.name);
@@ -105,22 +133,22 @@ void printMocktail(struct Drink mocktail, int printOption, int index) {
             printf("\tcijena: %.2f €\n", mocktail.price);
             printf("\tocjena: %.2f\n", mocktail.rating);
             break;
-        case PRINT_OPTION_PRICE:
-            printf("\t");
-            if (index > 0) {
-                printf("%d:\t", index);
-            }
-            printf("%-25s%.2f €\n", mocktail.name, mocktail.price);
-            break;
-        case PRINT_OPTION_RATING:
-            printf("\t");
-            if (index > 0) {
-                printf("%d:", index);
-            }
-            printf("\t%-25s%.1f/10\n", mocktail.name, mocktail.rating);
-            break;
+        // case PRINT_OPTION_PRICE:
+        //     printf("\t");
+        //     if (index > 0) {
+        //         printf("%d:\t", index);
+        //     }
+        //     printf("%-25s%.2f €\n", mocktail.name, mocktail.price);
+        //     break;
+        // case PRINT_OPTION_RATING:
+        //     printf("\t");
+        //     if (index > 0) {
+        //         printf("%d:", index);
+        //     }
+        //     printf("\t%-25s%.1f/10\n", mocktail.name, mocktail.rating);
+        //     break;
         case PRINT_OPTION_DELETE:
-            printf("\t%d. %s\n ", index + 1, mocktail.name);
+            printf("\t%d:\t%s\n ",index + 1, mocktail.name);
             break;
     }
 }
@@ -149,11 +177,11 @@ void listAlphabetically() {
         }
     }
     printf("    Rb      Ime                       Cijena     Ocjena\n");
-    printf("   ______________________________________________________\n");
+    printDivisionLine();
     for (int i = 0; i < numberOfDrinks; i++) {
-        printMocktail(sorted[i], PRINT_OPTION_ALPHA, i);
+        printMocktail(sorted[i], PRINT_OPTION_ALPHA, i + 1);
     }
-    printf("   ______________________________________________________\n");
+    printDivisionLine();
 }
 
 void addMocktail() {
@@ -255,29 +283,28 @@ void sortByPrice () {
     switch (choice) {
         case 1:
             printf("Mokteli sortirani od najvece cijene prema najmanjoj :\n");
-            printf("   ______________________________________\n");
+            printDivisionLine ();
             for (int i = 0; i < numberOfDrinks; i++) {
-                printMocktail(sorted[i],PRINT_OPTION_PRICE, i + 1);
+                printMocktail(sorted[i],PRINT_OPTION_ALPHA, i + 1);
             }
-
-            printf("   ______________________________________\n");
+            printDivisionLine ();
             break;
         case 2:
             printf("Mokteli sortirani od najmanje cijene prema najvecoj :\n");
-            printf("   ______________________________________\n");
+            printDivisionLine ();
             for (int i = numberOfDrinks - 1; i >= 0; i--) {
-                printMocktail(sorted[i], PRINT_OPTION_PRICE, numberOfDrinks - i);
+                printMocktail(sorted[i], PRINT_OPTION_ALPHA, numberOfDrinks - i);
             }
-            printf("   ______________________________________\n");
+            printDivisionLine ();
             break;
         case 3:
             printf("Najskuplji moktel:\n");
-            printMocktail(sorted[0], PRINT_OPTION_PRICE, -1);
+            printMocktail(sorted[0], PRINT_OPTION_ALPHA, -1);
             printf("\n");
             break;
         case 4:
             printf("Najjeftiniji moktel:\n");
-            printMocktail(sorted[numberOfDrinks - 1], PRINT_OPTION_PRICE, -1);
+            printMocktail(sorted[numberOfDrinks - 1], PRINT_OPTION_ALPHA, -1);
             printf("\n");
             break;
         default:
@@ -307,19 +334,19 @@ void sortByRating () {
     scanInt(&choice);
     if (choice == 1) {
         printf("\nMokteli sortirani silazno:\n");
-        printf("   ______________________________________\n");
+        printDivisionLine ();
         for (int i = 0; i < numberOfDrinks; i++) {
-            printMocktail(sorted[i], PRINT_OPTION_RATING, i + 1);
+            printMocktail(sorted[i], PRINT_OPTION_ALPHA, i + 1);
         }
-        printf("   ______________________________________\n");
+        printDivisionLine ();
     }
     else {
         printf("\nMokteli sortirani uzlazno:\n");
-        printf("   ______________________________________\n");
+        printDivisionLine ();
         for (int i = numberOfDrinks - 1; i >= 0; i--) {
-            printMocktail(sorted[i], PRINT_OPTION_RATING, numberOfDrinks - i);
+            printMocktail(sorted[i], PRINT_OPTION_ALPHA, numberOfDrinks - i);
         }
-        printf("   ______________________________________\n");
+        printDivisionLine ();
     }
 }
 
@@ -335,7 +362,7 @@ void deleteMocktail () {
         printf("Moktel ne postoji.\n");
         printf("Upisi: ");
     }
-    printf("Brisanje moktela %d. '%s'\n",choice,mocktails[choice - 1].name);
+    printf("Brisanje moktela %d: '%s'\n",choice,mocktails[choice - 1].name);
 
     printf("Upisi potvrdu [y/n]: ");
     if (!scanChar(&confrimation)) {
@@ -355,17 +382,17 @@ void deleteMocktail () {
 
 int main() {
     int choice;
-    printf("\tDobrodosli u MocktailCraft aplikaciju !\n");
-    printf("\t\tby-dora (Dora Hlevnjak)! <3\n");
+    printf("\tDobrodosli u " PINK "MocktailCraft" WHITE" aplikaciju !\n");
+    printf( MAGENTA "\t\tby-dora (Dora Hlevnjak)! <3\n");
 
     do {
-        printf("\nGlavni izbornik:\n");
-        printf("\t1 - dodavanje\n");
-        printf("\t2 - lista moktela\n");
-        printf("\t3 - ispis po nazivu\n");
-        printf("\t4 - ispis po cijeni\n");
-        printf("\t5 - ispis po ocjeni\n");
-        printf("\t6 - brisanje\n");
+        printf(CYAN "\nGlavni izbornik:\n" WHITE);
+        printf(GREEN "\t1 - dodavanje\n");
+        printf(BLUE "\t2 - lista moktela\n");
+        printf(RED "\t3 - ispis po nazivu\n");
+        printf(YELLOW "\t4 - ispis po cijeni\n");
+        printf(MAGENTA1 "\t5 - ispis po ocjeni\n");
+        printf(WHITE "\t6 - brisanje\n");
         printf("\t7 - izlaz\n");
         printf("Upisi opciju: ");
 
